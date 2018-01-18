@@ -10,25 +10,35 @@ namespace BattleShipGame
     {
         static void Main(string[] args)
         {
+            var ran = new Random();
             var grid_x = 11;
             var grid_y = 11;
-            var grid_object = new string[grid_x, grid_y];
+            var gridObject = new string[grid_x, grid_y];
+            DrawShip(1, 4, gridObject);
             for (var x = 1; x < grid_x; x++)
             {
                 for (var y = 1; y < grid_y; y++)
                 {
-                    grid_object[x, y] = "~";
-                }
-            }
+                    if (gridObject[x, y] == "V" || gridObject[x, y] == "H")
+                    {
 
-            Display(grid_x, grid_y, grid_object);
+                    }
+                    else
+                    {
+                        gridObject[x, y] = "~";
+                    }
+                    }
+            }
+            
+
+            Display(grid_x, grid_y, gridObject);
         }
 
         static void Display(int gridX, int gridY, string[,] gridObject)
         {
             Console.Clear();
             Console.WriteLine("   A  B  C  D  E  F  G  H  I  J");
-            for (int x = 1; x < grid_x; x++)
+            for (int x = 1; x < gridX; x++)
             {
                 if (x<10)
                 {
@@ -38,22 +48,21 @@ namespace BattleShipGame
                 {
                     Console.Write(x);
                 }
-                for (int y = 1; y < grid_y; y++)
+                for (int y = 1; y < gridY; y++)
                 {
                     //Console.Write(y);
-                    if (grid_object[x,y] == "~" )
+                    if (gridObject[x,y] == "~" )
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                     }
-                    else if (grid_object[x,y] == "X")
+                    else if (gridObject[x,y] == "X")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
-                    Console.Write("|" + grid_object[x, y] + "|");
+                    Console.Write("|" + gridObject[x, y] + "|");
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
 
-                DrawShip(1, 4, gridObject);
                 Console.WriteLine("");
 
             }
@@ -64,7 +73,7 @@ namespace BattleShipGame
         }
 
 
-        static void Shoot(int grid_x, int grid_y, string[,] grid_object)
+        static void Shoot(int grid_x, int grid_y, string[,] gridObject)
         {
             int shoot_x = 0;
             int shoot_y = 0;
@@ -150,10 +159,10 @@ namespace BattleShipGame
             }
             else
             {
-                Display(grid_x, grid_y, grid_object);
+                Display(grid_x, grid_y, gridObject);
             }
-            grid_object[shoot_x,shoot_y] = "X";
-            Display(grid_x, grid_y, grid_object);
+            gridObject[shoot_x,shoot_y] = "X";
+            Display(grid_x, grid_y, gridObject);
         }
 
         static string[,] DrawShip(int direction, int shipLength, string[,] grid)
@@ -170,7 +179,7 @@ namespace BattleShipGame
                 {
                     for (var i = 0; i < shipLength; i++)
                     {
-                        grid[shipsX, shipsY++] = "v";
+                        grid[shipsX, shipsY++] = "V";
                     }
                 }
                 else
@@ -190,7 +199,7 @@ namespace BattleShipGame
                 {
                     for (var i = 0; i < shipLength; i++)
                     {
-                        grid[shipsX++, shipsY] = "s";
+                        grid[shipsX++, shipsY] = "H";
                     }
                 }
                 else
@@ -202,9 +211,8 @@ namespace BattleShipGame
             return grid;
         }
 
-        public static int RandomNumber(int min, int max)
+        public static int RandomNumber(int min, int max,Random ran)
         {
-           var ran = new Random();
            var number = ran.Next(min, max);
            return number;
         }
